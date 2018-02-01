@@ -7,6 +7,17 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
+const requireHTTPs = (request, response, next) => {
+  if (request.headers['x-forwarded-proto'] !== 'https') {
+    return response.redirect('https://' + request.get('host') + request.url);
+  }
+  next();
+}
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(requireHTTPs);
+}
+
 function checkRequirements(requestBody, requirements, response) {
   for (let requiredParameter of requirements) {
     if (!requestBody[requiredParameter]) {
@@ -15,8 +26,6 @@ function checkRequirements(requestBody, requirements, response) {
   }
   return { missing: false };
 }
-
-
 
 app.set('port', process.env.PORT || 3000);
 

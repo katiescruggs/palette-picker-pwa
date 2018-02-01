@@ -1,0 +1,30 @@
+{
+  "short_name": "PalettePicker",
+  "name": "Palette Picker",
+  "background_color": "#C8B8DB",
+  "theme_color": "#C8B8DB",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "assets/palette-48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "assets/palette-96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "assets/palette-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "assets/palette-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "index.html?launcher=true"
+}
