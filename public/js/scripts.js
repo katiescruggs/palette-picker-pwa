@@ -165,6 +165,7 @@ $(document).ready(() => {
 
 $(document).on('keydown', (e) => {
   if (e.keyCode === 32 && e.target === document.body) {
+    e.preventDefault();
     refreshColors();
   }
 });
@@ -205,3 +206,17 @@ $('.display-projects').on('click', '.delete-btn', async function() {
 
 $('#save-palette-btn').on('click', savePalette);
 $('#new-project-btn').on('click', postProject);
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('../service-worker.js')
+      .then(registration => navigator.serviceWorker.ready)
+      .then(registration => {
+        Notification.requestPermission();
+        console.log('ServiceWorker registration successful');
+      })
+      .catch(error => {
+        console.log('ServiceWorker registration failed, ', error);
+      })
+  })
+}
