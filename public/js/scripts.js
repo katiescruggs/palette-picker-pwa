@@ -28,9 +28,16 @@ let blocks = [
 let projects;
 let palettes = [];
 
+const notifySavePalette = (paletteTitle) => {
+  navigator.serviceWorker.controller.postMessage({
+    type: 'save-palette',
+    paletteTitle
+  });
+};
+
 const randomNum = () => {
   return Math.floor(Math.random() * 16);
-}
+};
 
 const randomColor = () => {
   const chars = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
@@ -65,6 +72,8 @@ const fetchProjects = async () => {
   const projectResults = await projectsFetch.json();
   projects = projectResults.results;
   palettes = [];
+
+  $('#dropdown').html('');
 
   projects.forEach(project => {
     displaySelectOption(project.title);
@@ -106,7 +115,8 @@ const displaySavedPalettes = (projectTitle, palette) => {
   }
 }
 
-const savePalette = () => {
+const savePalette = (e) => {
+  e.preventDefault();
   const projectTitle = $('#dropdown').val();
   const project = projects.find(fetchedProj => fetchedProj.title === projectTitle);
 
@@ -120,6 +130,7 @@ const savePalette = () => {
   const paletteBody = { title, color1, color2, color3, color4, color5 };
 
   postPalette(paletteBody, project);
+  notifySavePalette(title);
 };
 
 const postPalette = async (paletteBody, project) => {
@@ -136,7 +147,8 @@ const postPalette = async (paletteBody, project) => {
   fetchProjects();
 };
 
-const postProject = async () => {
+const postProject = async (e) => {
+  e.preventDefault();
   const title = $('#project-input').val();
   
   const initialPost = await fetch('api/v1/projects/', {

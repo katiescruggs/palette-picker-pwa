@@ -37,4 +37,10 @@ this.addEventListener('activate', event => {
     })
     .then(() => clients.claim())
   );
-})
+});
+
+this.addEventListener('message', event => {
+  if (event.data.type === 'save-palette') {
+    self.registration.showNotification(`${event.data.paletteTitle} was successfully saved!`)
+  }
+});
